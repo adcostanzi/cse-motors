@@ -32,9 +32,11 @@ app.use("/inv", inventoryRoute)
 //Index route
 app.get("/", utilities.handleErrors(baseController.buildHome))
 
+app.get("/test", utilities.handleErrors(baseController.createError))
+
 // File Not Found Route - must be last route in list
 app.use(async (req, res, next) => {
-  next({status: 404, message: 'Sorry, we appear to have lost that page.'})
+  next({status: 404, message: '<img class="error-img" src="images/site/404-error-page.webp" alt="404 Error picture">'})
 })
 
 
@@ -45,7 +47,7 @@ app.use(async (req, res, next) => {
 app.use(async (err, req, res, next) => {
   let nav = await utilities.getNav()
   console.error(`Error at: "${req.originalUrl}": ${err.message}`)
-  if (err.status == 404){ message = err.message} else { err.message = "Oh no! There was a crash, try another route."}
+  if (err.status == 404){ message = err.message} else { err.message = `<img class="error-img" src="images/site/500-error.jpg" alt="500 Error picture">`}
   res.render("errors/error", {
     title: err.status || 'Server Error',
     message: err.message,

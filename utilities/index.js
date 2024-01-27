@@ -57,12 +57,42 @@ Util.buildClassificationGrid = async function(data){
   return grid
 }
 
+Util.buildDetailsPage = async function(data) {
+  let page = ""
+  if(Object.keys(data).length > 0){
+    page += `
+    <section class="car-details-section">
+    <h2 class="car-title">${data.inv_year} ${data.inv_make} ${data.inv_model}</h2>
+    <div class="car-img-container">
+        <img src="${data.inv_image}" alt="${data.inv_year} ${data.inv_make} ${data.inv_model} picture">
+    </div>
+    <div class="car-details-subsection">
+        <h3>${data.inv_make} ${data.inv_model} Details</h3>
+        <span class="car-price">Price: $${new Intl.NumberFormat('en-US').format(data.inv_price)}</span>
+        <span class="car-milage">Milage: ${new Intl.NumberFormat('en-US').format(data.inv_miles)} miles</span>
+        <p class="car-description">${data.inv_description}</p>
+        <span class="car-color">Color: ${data.inv_color}</span>
+    </div>
+</section>
+    `
+  } else {
+    page += `<p class="notice">Sorry, no matching vehicles could be found.</p>`
+  }
+  return page
+} 
+
+
+
+
+
 /* ****************************************
  * Middleware For Handling Errors
  * Wrap other function in this for 
  * General Error Handling
  **************************************** */
 Util.handleErrors = fn => (req, res, next) => Promise.resolve(fn(req, res, next)).catch(next)
+
+
 
 
   module.exports = Util

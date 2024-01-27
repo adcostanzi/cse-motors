@@ -87,6 +87,12 @@ nav ul {
   
 }
 
+@media screen and (max-width: 365px) {
+  nav ul li a {
+    font-size: 0.8rem;
+  }
+}
+
 
 /************ HERO *************/
 
@@ -204,10 +210,10 @@ picture > img {
 /************ VEHICLE GRID *************/
 
 #inv-display {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 320px));
-  gap: 1rem;
   list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
   margin: 0 auto;
   justify-items: center;
 }
@@ -217,6 +223,7 @@ picture > img {
   padding: 0;
   border-radius: 20px;
   border: solid thin black;
+  width: 200px;
 }
 
 .namePrice hr {
@@ -230,17 +237,61 @@ picture > img {
 .namePrice {
   display: flex;
   flex-direction: column;
+  margin-bottom: 1.2rem;
+}
+
+.namePrice h2 {
+  font-size: 1.3rem;
+  margin: 0 auto;
   margin-bottom: 1rem;
 }
 
 #inv-display li img{
   width: 100%;
-  object-fit: cover;
+  height: 50%;
+  object-fit:scale-down;
   border-radius: 20px;
 }
 
 
+/************ CAR DETAIL PAGE *************/
 
+.car-title {
+  text-align: center;
+  font-size: 2rem;
+}
+
+.car-img-container {
+  width: 100%;
+  margin: 1.5rem 0px;
+}
+
+.car-img-container img {
+  width: 100%;
+  border: var(--accent-2) solid 2px;
+}
+
+.car-details-subsection h3 {
+  font-size: 1.5rem;
+  color: var(--primary);
+}
+
+.car-details-subsection span{
+  display: block;
+  margin: 1rem 0px;
+}
+
+.car-price {
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: var(--primary);
+}
+
+/************ ERROR *************/
+
+.error-img {
+  width: 100%;
+}
 
 /************ FOOTER *************/
 
@@ -336,6 +387,35 @@ a.cta-btn {
 
 .reviews ul li {
   font-size: 1.2rem;
+}
+
+
+/************ CAR DETAIL PAGE *************/
+
+.car-details-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 2rem;
+}
+
+.car-title {
+  grid-column: 1/3;
+  margin: 2rem 0 0 0;
+}
+
+.car-img-container {
+  grid-column: 1/2;
+}
+
+.car-details-subsection {
+  grid-column: 2/3;
+  display: flex;
+  flex-direction: column;
+}
+
+.car-details-subsection h3 {
+  margin: 0;
 }
 
 }
