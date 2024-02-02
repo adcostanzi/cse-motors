@@ -7,13 +7,13 @@
     <% }) %>
     </ul>
     <% } %>
-<form class="login-form" action="/account/login" method="post">
+<form class="cse-motor-form" action="/account/login" method="post">
     <fieldset>
         <legend>Login Information</legend>
-        <label class="login-label">Email
+        <label class="form-label">Email
             <input type="email" name="account_email" placeholder="someone@emailprovider.com" value="<%= locals.account_email %>" required>
         </label>
-        <label class="login-label">Password 
+        <label class="form-label">Password 
             <input type="password" name="account_password" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$" required>
         </label>
         <input type="submit" name="loginBtn" value="Login">

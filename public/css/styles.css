@@ -288,9 +288,9 @@ picture > img {
 }
 
 
-/************ LOGIN/REGISTRATION FORM *************/
+/************ FORMS *************/
 
-.login-form {
+.cse-motor-form {
   width: 100%;
   max-width: 400px;
   margin: 0 auto;
@@ -307,16 +307,16 @@ legend {
   padding: 0 0.5rem;
 }
 
-.login-label {
+.form-label {
   display: block;
   margin-top: 1rem;
   margin-bottom: 0.8rem;
   text-align: center;
 }
 
-.login-form input {
+.cse-motor-form input {
   display: block;
-  margin: 0 auto 1rem;
+  margin: 0.2rem auto 1rem;
   height: 44px;
   width: 80%;
   padding: 0.7rem;
@@ -387,6 +387,15 @@ input:required:invalid, input:focus:invalid {
 .error-img {
   width: 100%;
 }
+
+/************ MANAGEMENT VIEWS *************/
+
+.block-a {
+  display: block;
+  padding-left: 1rem;
+  margin: 1rem auto;
+}
+
 
 /************ FOOTER *************/
 

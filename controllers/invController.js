@@ -1,6 +1,7 @@
 const invModel = require("../models/inventory-model")
 const utilities = require("../utilities/")
 
+
 const invCont = {}
 
 /* ***************************
@@ -33,5 +34,42 @@ invCont.buildDetailsByInvId = async function (req, res, next) {
   })
 }
 
+
+invCont.buildManagementView = async function (req, res) {
+  let nav = await utilities.getNav()
+  res.render("inventory/management", {
+    title: "Vehicle Management",
+    nav,
+  })
+}
+
+invCont.buildManagementClassification = async function (req, res) {
+  let nav = await utilities.getNav()
+  res.render("inventory/add-classification", {
+    title: "Add Classification",
+    nav,
+    errors: null,
+  })
+}
+
+
+invCont.addClassification = async function (req, res){
+  const {classification_name} = req.body
+
+  //Send request to Model
+  const invResult = await invModel.addClassification(classification_name)
+  let nav = await utilities.getNav()
+  if (invResult){
+    req.flash("notice", `Congratulations! Classification ${classification_name} has been added`)
+    res.status(201).redirect("/inv")
+  } else {
+    req.flash("notice", "Sorry, there classification was not added")
+    res.status(501).render("inventory/add-classification", {
+      title: "Add Classification",
+      nav,
+      errors:null,
+    })
+  }
+} 
 
 module.exports = invCont

@@ -25,6 +25,8 @@ async function getInventoryByClassificationId(classification_id) {
   }
 }
 
+
+// Get Details by Inventory ID
 async function getDetailsByInvId(inv_id) {
   try {
     const data = await pool.query(
@@ -37,6 +39,13 @@ async function getDetailsByInvId(inv_id) {
   }
 }
 
+async function addClassification(classification_name){
+  try {
+    const sql = "INSERT INTO classification (classification_name) VALUES ($1) RETURNING *"
+    return await pool.query(sql, [classification_name])
+  } catch (error) {
+    return error.message
+  }
+}
 
-
-module.exports = {getClassifications, getInventoryByClassificationId, getDetailsByInvId}
+module.exports = {getClassifications, getInventoryByClassificationId, getDetailsByInvId, addClassification}
