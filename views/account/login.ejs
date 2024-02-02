@@ -1,10 +1,17 @@
 <h1><%- title %></h1>
 <%- messages() %>
-<form class="login-form">
+<% if (errors) {%>
+    <ul class="notice">
+    <%  errors.array().forEach(error => { %>
+        <li> <%=error.msg %></li>
+    <% }) %>
+    </ul>
+    <% } %>
+<form class="login-form" action="/account/login" method="post">
     <fieldset>
         <legend>Login Information</legend>
         <label class="login-label">Email
-            <input type="email" name="account_email" placeholder="someone@emailprovider.com" required>
+            <input type="email" name="account_email" placeholder="someone@emailprovider.com" value="<%= locals.account_email %>" required>
         </label>
         <label class="login-label">Password 
             <input type="password" name="account_password" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$" required>

@@ -12,13 +12,13 @@
     <fieldset>
         <legend>Register your information</legend>
         <label class="login-label">First Name*
-            <input type="text" name="account_firstname" placeholder="John" required>
+            <input type="text" name="account_firstname" placeholder="John" required value="<%= locals.account_firstname %>">
         </label>
         <label class="login-label">Last Name*
-            <input type="text" name="account_lastname" placeholder="Doe" required>
+            <input type="text" name="account_lastname" placeholder="Doe" required value="<%= locals.account_lastname %>">
         </label>
         <label class="login-label">Email*
-            <input type="email" name="account_email" placeholder="someone@emailprovider.com" required>
+            <input type="email" name="account_email" placeholder="someone@emailprovider.com" required value="<%= locals.account_email %>">
         </label>
         <label class="login-label">Password*
             <input type="password" id="password" name="account_password" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$" required>  
