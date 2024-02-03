@@ -24,11 +24,35 @@ Util.getNav = async function (req, res, next) {
     return list
   }
 
+
+/* ************************
+ * Constructs the select tag for the classification name selection in the add-inventory view
+ ************************** */
+
+Util.getClassificationSelect = async function (req = null, res, next) {
+  let data = await invModel.getClassifications()
+  let options = ""
+  let selected =  ""
+  data.rows.forEach((row) => {
+    if (row.classification_id == req) {
+      selected = `selected`
+    } else {
+      selected = ""
+    }
+    options += `<option class="classification-option" value="${row.classification_id}" ${selected}>${row.classification_name}</option>`
+  })
+  let select = `<select name="classification_id" required> <option disabled selected value>Select an option</option>${options}</select>`
+  return select
+}
+
+
+
+
 /* **************************************
 * Build the classification view HTML
 * ************************************ */
 Util.buildClassificationGrid = async function(data){
-  let grid
+  let grid = ""
   if(data.length > 0){
     grid = '<ul id="inv-display">'
     data.forEach(vehicle => { 

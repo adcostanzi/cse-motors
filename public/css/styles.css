@@ -314,7 +314,7 @@ legend {
   text-align: center;
 }
 
-.cse-motor-form input {
+.cse-motor-form input, textarea, select {
   display: block;
   margin: 0.2rem auto 1rem;
   height: 44px;
@@ -322,6 +322,13 @@ legend {
   padding: 0.7rem;
   border-radius: 10px;
   font-size: 0.9rem;
+}
+
+textarea {
+  min-height: 6rem;
+  max-height: 30%;
+  max-width: 80%;
+  resize: none;
 }
 
 .registration-link {
@@ -369,11 +376,11 @@ hr {
   border:solid var(--primary) 1px;
 }
 
-input:required:invalid, input:focus:invalid {
+input:required:invalid, input:focus:invalid, textarea:required:invalid, textarea:focus:invalid, select:required:invalid {
   border: 3px solid rgb(204, 1, 1);
  }
 
- input:required:valid {
+ input:required:valid, textarea:required:valid, select:required:valid {
   border: 3px solid green;
  }
 

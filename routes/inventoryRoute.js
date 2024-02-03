@@ -17,11 +17,20 @@ router.get("/detail/:invId", utilities.handleErrors(invController.buildDetailsBy
 // Route to build management classification
 router.get("/add-classification",utilities.handleErrors(invController.buildManagementClassification))
 
+// Route to build management classification
+router.get("/add-inventory",utilities.handleErrors(invController.buildManagementInventory))
+
 //Route when Adding classification
 router.post("/add-classification",
 invValidate.classificationRules(),
 invValidate.checkClassification,
 utilities.handleErrors(invController.addClassification))
+
+//Route when Adding classification
+router.post("/add-inventory",
+invValidate.inventoryRules(),
+invValidate.checkInventory,
+utilities.handleErrors(invController.addInventory))
 
 
 module.exports = router;
