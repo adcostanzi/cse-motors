@@ -14,11 +14,23 @@ router.get("/type/:classificationId", utilities.handleErrors(invController.build
 // Route to build view by inventory id
 router.get("/detail/:invId", utilities.handleErrors(invController.buildDetailsByInvId))
 
+// Route to build the inventory management list
+router.get("/getInventory/:classification_id", utilities.handleErrors(invController.getInventoryJSON))
+
 // Route to build management classification
 router.get("/add-classification",utilities.handleErrors(invController.buildManagementClassification))
 
 // Route to build management classification
 router.get("/add-inventory",utilities.handleErrors(invController.buildManagementInventory))
+
+// Route to build edit inventory vehicle
+router.get("/edit/:inv_id", utilities.handleErrors(invController.buildEditInventoryForm))
+
+// Route to update inventory
+router.post("/update",
+invValidate.inventoryRules(),
+invValidate.checkUpdateData,
+utilities.handleErrors(invController.updateInventory))
 
 //Route when Adding classification
 router.post("/add-classification",

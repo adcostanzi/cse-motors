@@ -37,15 +37,17 @@ Util.getClassificationSelect = async function (req = null, res, next) {
   let data = await invModel.getClassifications()
   let options = ""
   let selected =  ""
+  let optional = "selected"
   data.rows.forEach((row) => {
     if (row.classification_id == req) {
-      selected = `selected`
+      selected = "selected"
+      optional = ""
     } else {
       selected = ""
     }
     options += `<option class="classification-option" value="${row.classification_id}" ${selected}>${row.classification_name}</option>`
   })
-  let select = `<select name="classification_id" required> <option disabled selected value>Select an option</option>${options}</select>`
+  let select = `<select name="classification_id" id="classificationList" required> <option ${optional} disabled value>Select an option</option>${options}</select>`
   return select
 }
 

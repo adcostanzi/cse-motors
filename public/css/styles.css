@@ -357,6 +357,12 @@ input[type="submit"]:active, #show-password:active {
   color: var(--primary);
 }
 
+input[type="submit"]:disabled {
+  background-color: var(--auxiliary);
+  color: black;
+  border: 2px solid var(--auxiliary);
+}
+
 #show-password {
   display: block;
   background-color: rgba(51, 51, 51, 1);
@@ -403,6 +409,33 @@ input:required:invalid, input:focus:invalid, textarea:required:invalid, textarea
   margin: 1rem auto;
 }
 
+
+/************ MANAGEMENT INVENTORY *************/
+
+table {
+  border: thin solid black;
+  border-collapse: collapse;
+  margin: 0 auto;
+  width: 100%;
+}
+
+thead {
+  background-color: rgba(94, 127, 100, 1);
+  color: white;
+}
+
+th {
+  padding: 0.5rem;
+  text-align: left;
+}
+
+td, th {
+  padding: 0.7rem 1rem;
+}
+
+tr:nth-child(even) {
+  background-color: rgba(94, 127, 100, 0.2);
+}
 
 /************ FOOTER *************/
 
