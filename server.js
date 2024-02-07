@@ -17,6 +17,7 @@ const session = require("express-session")
 const pool = require("./database/")
 const accountRoute = require("./routes/accountRoute")
 const bodyParser = require("body-parser")
+const cookieParser = require("cookie-parser")
 
 /* ***********************
  * View Engine and Templates
@@ -49,7 +50,9 @@ app.use(function(req, res, next){
 app.use(bodyParser.json()) // tells the express application to use the body parser to work with JSON data (to be used later).
 app.use(bodyParser.urlencoded({extended:true})) //Tells the express application to read and work with data sent via a URL as well as from a form, stored in the request object's body. The "extended: true" object is a configuration that allows rich objects and arrays to be parsed. The final part is an inline comment pertaining to the entire line.
 
+app.use(cookieParser())
 
+app.use(utilities.checkJWTToken)
 
 /* ***********************
  * Routes
