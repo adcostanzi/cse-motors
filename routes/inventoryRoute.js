@@ -26,6 +26,17 @@ router.get("/add-inventory",utilities.handleErrors(invController.buildManagement
 // Route to build edit inventory vehicle
 router.get("/edit/:inv_id", utilities.handleErrors(invController.buildEditInventoryForm))
 
+
+
+
+// Route to build delete inventory vehicle
+router.get("/delete/:inv_id", utilities.handleErrors(invController.buildDeleteInventoryForm))
+
+
+// Route to delete inventory
+router.post("/delete", utilities.handleErrors(invController.deleteInventory))
+
+
 // Route to update inventory
 router.post("/update",
 invValidate.inventoryRules(),

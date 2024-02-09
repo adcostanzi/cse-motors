@@ -148,6 +148,24 @@ invCont.buildEditInventoryForm  = async function (req, res) {
   })
 }
 
+
+// Build view for delete confirmation of existing inventory (vehicle)
+invCont.buildDeleteInventoryForm  = async function (req, res) {
+  const inv_id = parseInt(req.params.inv_id)
+  let nav = await utilities.getNav()
+  const invData = await invModel.getDetailsByInvId(inv_id)
+  res.render("inventory/delete-confirm", {
+    title: `Delete ${invData.inv_make} ${invData.inv_model}`,
+    nav,
+    errors: null,
+    inv_id: invData.inv_id,
+    inv_make: invData.inv_make,
+    inv_model: invData.inv_model,
+    inv_year: invData.inv_year,
+    inv_price: invData.inv_price,
+  })
+}
+
 // Updates Inventory to Database or returns error
 invCont.updateInventory = async function (req, res, next) {
   const {inv_id, inv_make, inv_model, inv_year, inv_description, inv_image, inv_thumbnail, inv_price, inv_miles, inv_color, classification_id} = req.body
@@ -181,5 +199,20 @@ invCont.updateInventory = async function (req, res, next) {
     }
 }
 
+
+// Deletes Inventory *Vehicle on Database or returns error
+invCont.deleteInventory = async function (req, res, next) {
+  const {inv_id} = req.body
+
+  // Send request to DELETE in Database
+  const inventoryResult = await invModel.deleteInventory(inv_id)
+  if(inventoryResult){
+    req.flash("notice", `Congratulations! The delete process was successful!`)
+    res.redirect("/inv")
+  } else {
+    req.flash("notice", "Unfortunately the delete process couldn't be carried out.")
+    res.redirect(`inv/delete/${inv_id}`)
+    }
+}
 
 module.exports = invCont
