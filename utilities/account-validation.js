@@ -67,6 +67,90 @@ validate.checkRegData = async (req, res, next) => {
     next()
   }
   
+
+
+// Account Password Form Validation Rules
+validate.passwordUpdateRules = () => {
+  return [
+      // password is required and must be strong password
+      body("account_password")
+          .trim()
+          .isStrongPassword({
+          minLength: 12,
+          minLowercase: 1,
+          minUppercase: 1,
+          minNumbers: 1,
+          minSymbols: 1,
+          })
+          .withMessage("Password does not meet requirements."),
+  ]
+}
+
+// Check Account Password is valid before updating
+validate.checkAccountPassword = async (req, res, next) => {
+  const {account_id} = req.body
+  let errors = []
+  errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    let nav = await utilities.getNav()
+     res.render("account/account-update", {
+      errors,
+      title: "Account Update",
+      nav,
+    })
+    return
+  }
+  next()
+}
+  
+// Account Information Form Validation Rules
+validate.accountUpdateRules = () => {
+  return [
+      // firstname is require and must be a string
+      body("account_firstname")
+          .trim()
+          .isLength({min: 1})
+          .withMessage("Please provide a first name."),// on error this message is sent.
+
+      // lastname is required and must be string
+      body("account_lastname")
+          .trim()
+          .isLength({ min: 2 })
+          .withMessage("Please provide a last name."), // on error this message is sent.
+  
+      // valid email is required and cannot already exist in the DB
+      body("account_email")
+          .trim()
+          .isEmail()
+          .normalizeEmail() // refer to validator.js docs
+          .withMessage("A valid email is required."),
+  ]
+}
+
+// Check Account Information is valid before updating
+validate.checkAccountInformantion = async (req, res, next) => {
+  const {account_id, account_firstname, account_lastname, account_email } = req.body
+  let errors = []
+  errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    let nav = await utilities.getNav()
+    res.render(`account/account-update`, {
+      errors,
+      title: "Account Update",
+      nav,
+      account_firstname,
+      account_lastname,
+      account_email,
+    })
+    return
+  }
+  next()
+}
+
+
+
+
+
 // Login Data Validation Rules
 validate.loginRules = () => {
     return [
@@ -98,6 +182,7 @@ validate.loginRules = () => {
             
     ]
 }
+
 
 
 

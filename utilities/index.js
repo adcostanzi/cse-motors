@@ -134,11 +134,19 @@ Util.checkJWTToken = (req, res, next) => {
         }
         res.locals.accountData = accountData
         res.locals.loggedin = 1
+        //console.log("res.locals:", res.locals); // Log res.locals to see its properties
         next()
     })
   } else {
+    res.locals.loggedin = 0
     next()
   }
+}
+
+// Clear token information
+Util.clearJWTToken = (req, res) => {
+  res.clearCookie("jwt")
+  res.redirect("/")
 }
 
 // Check Login
@@ -151,6 +159,16 @@ Util.checkLogin = (req, res, next) => {
   }
 }
 
+
+// Checks and allows/denies access depending on what account type the user has
+Util.checkAccountType = (req, res, next) => {
+  if (res.locals.accountData.account_type == "Employee" || res.locals.accountData.account_type == "Admin"){
+    next()
+  } else {
+    req.flash("notice", "Access forbidden for clients. Please use other credentials")
+    return res.redirect("/account/login")
+  }
+}
 
 
   module.exports = Util

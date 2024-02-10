@@ -95,11 +95,77 @@ async function accountLogin(req, res){
 async function buildManagementHome(req, res) {
     let nav = await utilities.getNav()
     res.render("account/management",{
-        title: "Management",
+        title: "Account Management",
         nav,
         errors: null,
     })
 }
 
+async function buildUpdatePage(req, res) {
+    let nav = await utilities.getNav()
+    let account_id = parseInt(req.params.account_id)
+    let accountData = await accountModel.getAccountById(account_id)
+    res.render("account/account-update",{
+        title: "Account Update",
+        nav,
+        errors: null,
+        account_firstname: accountData.account_firstname,
+        account_lastname: accountData.account_lastname,
+        account_email: accountData.account_email,
+    })
+}
 
-module.exports = {buildLogin, buildRegister, registerAccount, accountLogin, buildManagementHome}
+async function updateAccountInfo(req, res) {
+    const {account_id, account_firstname, account_lastname, account_email} = req.body
+    let nav = await utilities.getNav()
+    let accountResult = await accountModel.updateInformation(account_id, account_firstname, account_lastname, account_email)
+    if (accountResult){
+        //Creation of new cookie to resfresh user information
+        const accountData = await accountModel.getAccountById(account_id)
+        const accessToken = jwt.sign(accountData, process.env.ACCESS_TOKEN_SECRET, {expiresIn: 3600 * 1000})
+        res.cookie("jwt", accessToken, {httpOnly:true, maxAge: 3600 * 1000})
+        req.flash("notice", "Account Information has been sucessfully updated!")
+        res.redirect("/account/")
+    } else {
+        req.flash("notice", "Unfortunately the account information could not be updated")
+        res.status(501).render(`account/update/${account_id}`, {
+            title: "Account Update",
+            nav,
+            errors: null,
+            account_firstname: account_firstname,
+            account_lastname: account_lastname,
+            account_email: account_email,
+        })
+    }
+}
+
+// Updates password - hash new pasword and passes to model to update database
+async function updateAccountPassword(req, res) {
+    const {account_id, account_password} = req.body
+    let nav = await utilities.getNav()
+    let hashedPassword
+    try {
+        hashedPassword = await bcrypt.hashSync(account_password, 10)
+    } catch (error) {
+        req.flash("notice", "Sorry, there was an error while trying to update password.")
+        res.status(500).render("account/account-update", {
+            title: "Account Update",
+            nav,
+            errors: null,
+        })
+    }
+    let accountResult = await accountModel.updatePassword(account_id, hashedPassword)
+    if (accountResult){
+        req.flash("notice", "Account password has been sucessfully updated!")
+        res.redirect("/account/")
+    } else {
+        req.flash("notice", "Unfortunately the account password could not be updated")
+        res.status(501).render(`account/update/${account_id}`, {
+            title: "Account Update",
+            nav,
+            errors: null,
+        })
+    }
+}
+
+module.exports = {buildLogin, buildRegister, registerAccount, accountLogin, buildManagementHome, buildUpdatePage, updateAccountInfo, updateAccountPassword}

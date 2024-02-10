@@ -62,11 +62,12 @@ app.use("/inv", inventoryRoute)
 app.use("/account", accountRoute)
 
 //Index route
-app.get("/", utilities.handleErrors(baseController.buildHome))
+app.get("/", utilities.checkJWTToken, utilities.handleErrors(baseController.buildHome))
 
 app.get("/test", utilities.handleErrors(baseController.createError))
 
-
+//Index route
+app.get("/logout", utilities.clearJWTToken, utilities.handleErrors(baseController.buildHome))
 
 // File Not Found Route - must be last route in list
 app.use(async (req, res, next) => {

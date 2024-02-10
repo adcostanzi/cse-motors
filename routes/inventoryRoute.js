@@ -6,7 +6,10 @@ const utilities = require("../utilities/")
 const invValidate = require("../utilities/inventory-validation")
 
 // Route to build management view
-router.get("/", utilities.handleErrors(invController.buildManagementView))
+router.get("/", 
+utilities.checkLogin,
+utilities.checkAccountType,
+utilities.handleErrors(invController.buildManagementView))
 
 // Route to build inventory by classification view
 router.get("/type/:classificationId", utilities.handleErrors(invController.buildByClassificationId))

@@ -1,0 +1,53 @@
+<h1><%- title %></h1>
+<%- messages() %>
+<% if (errors) {%>
+    <ul class="notice">
+    <%  errors.array().forEach(error => { %>
+        <li> <%=error.msg %></li>
+    <% }) %>
+    </ul>
+    <% } %>
+    <% if (locals.account_firstname == undefined) { locals.account_firstname = accountData.account_firstname } %>
+    <% if (locals.account_lastname == undefined) { locals.account_lastname = accountData.account_lastname } %>
+    <% if (locals.account_email == undefined) { locals.account_email = accountData.account_email } %>
+
+<form class="cse-motor-form" id="update-account-info" action="/account/update/" method="post">
+    <fieldset>
+        <legend>Update your information</legend>
+        <label class="form-label">First Name*
+            <input type="text" name="account_firstname" placeholder="John" required value="<%= locals.account_firstname %>">
+        </label>
+        <label class="form-label">Last Name*
+            <input type="text" name="account_lastname" placeholder="Doe" required value="<%= locals.account_lastname %>">
+        </label>
+        <label class="form-label">Email*
+            <input type="email" name="account_email" placeholder="someone@emailprovider.com" required value="<%= locals.account_email %>">
+        </label>
+        <hr>
+        <input type="hidden" name="account_id" value="<%= accountData.account_id %>">
+        <input type="submit" name="updateBtn" id="updateBtn" value="Update" disabled>
+    </fieldset>
+</form>
+<hr class="hr-form">
+<form class="cse-motor-form" id="update-account-password" action="/account/update-password" method="post">
+    <fieldset>
+        <legend>Change Password</legend>
+        <label class="form-label">Password 
+            <input type="password" id="password" name="account_password" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$" required>
+        </label>
+        <span id="show-password">Show Password</span>
+        <p class="form-requirements">
+            <b>** Entering a new password will change current password **</b><br>
+            <b>New Password must be:</b> <br>
+            Minimum 12 characters in length<br>
+            Contain at least 1 capital letter<br>
+            Contain at least 1 number<br>
+            Contain at least 1 special character<br>
+        </p>
+        <hr>
+        <input type="hidden" name="account_id" value="<%= accountData.account_id %>">
+        <input type="submit" name="changeBtn" id="changeBtn" value="Change" disabled>
+    </fieldset>
+</form>
+<script src="/js/acc-update.js"></script>
+<script src="/js/script.js"></script>

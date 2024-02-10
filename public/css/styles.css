@@ -394,7 +394,9 @@ input:required:invalid, input:focus:invalid, textarea:required:invalid, textarea
   color: red;
  }
 
-
+.hr-form {
+  margin: 2rem 0;
+}
 /************ ERROR *************/
 
 .error-img {
@@ -561,5 +563,6 @@ a.cta-btn {
 .car-details-subsection h3 {
   margin: 0;
 }
+
 
 }
