@@ -170,5 +170,32 @@ Util.checkAccountType = (req, res, next) => {
   }
 }
 
+// Get reviews and return them as HTML template
+Util.getReviews = async function (inv_id) {
+  const rawReviews = await invModel.getReviewsById(inv_id)
+  let reviews = `<section class="review-section"><h3>Customer Reviews</h3>`
+  if (rawReviews.rows.length > 0){
+    rawReviews.rows.forEach((review) => {
+      let name = `${review.account_firstname.charAt(0)}${review.account_lastname}`
+      let date = new Date(review.review_date)
+      let dateOptions = {month: "long", day:"numeric", year:"numeric"}
+      reviews += `<div class="review">
+      <span class="review-author"><b>${name}</b> wrote on ${date.toLocaleDateString("en-US", dateOptions)}</span>
+      <hr class="review-separator">
+      <p class="review-text">${review.review_text}</p>
+      </div>`
+    })
+    reviews += `</section>`
+  } else {
+    reviews += `<span class="review-text no-reviews">There are no reviews for this item. Be the first one to leave a review!</span></section>`
+  }
+  return reviews
+}
+
+Util.getCarName = async function (inv_id){
+  const carInfo = await invModel.getDetailsByInvId(inv_id)
+  let carName = `${carInfo.inv_make} ${carInfo.inv_model}`
+  return carName
+}
 
   module.exports = Util

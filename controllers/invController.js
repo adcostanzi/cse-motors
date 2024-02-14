@@ -25,12 +25,17 @@ invCont.buildDetailsByInvId = async function (req, res, next) {
   const inv_id = req.params.invId
   const data = await invModel.getDetailsByInvId(inv_id)
   const details = await utilities.buildDetailsPage(data)
+  const reviews = await utilities.getReviews(inv_id)
   let nav = await utilities.getNav()
   const carName = `${data.inv_make} ${data.inv_model}` 
   res.render("./inventory/detail", {
     title: carName,
+    errors: null,
     nav,
-    details
+    details,
+    reviews,
+    data,
+    toRender: null,
   })
 }
 
@@ -213,6 +218,21 @@ invCont.deleteInventory = async function (req, res, next) {
     req.flash("notice", "Unfortunately the delete process couldn't be carried out.")
     res.redirect(`inv/delete/${inv_id}`)
     }
+}
+
+// Post Review in Database and refresh page
+invCont.postReview = async function (req, res, next) {
+  const {review_text, inv_id, account_id} = req.body
+
+  //Insert review in Database
+  const reviewResult = await invModel.insertReview(review_text, inv_id, account_id)
+  if (reviewResult) {
+    req.flash("notice", "Your review has been posted on the page! Thanks for your feedback!")
+    res.redirect(`/inv/detail/${inv_id}`)
+  } else {
+    req.flash("notice", "Unfortunately we could not proccess your review. Try again later")
+    res.redirect(`/inv/detail/${inv_id}`)
+  }
 }
 
 module.exports = invCont

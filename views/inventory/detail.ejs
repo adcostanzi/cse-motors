@@ -1,2 +1,37 @@
 <%# Display Car Details Section %>
 <%- details %>
+<%- reviews %>
+<% if (loggedin) {%>
+    <%- messages() %>
+<% if (errors) {%>
+<ul class="notice">
+  <% errors.array().forEach(error => { %>
+  <li><%=error.msg %></li>
+  <% }) %>
+</ul>
+<% } %>
+<form class="cse-motor-form" id="review-form" action="/inv/detail/review" method="post">
+    <fieldset>
+        <legend>Write your review</legend>
+        <label class="form-label">Username
+            <input type="text" name="username" value="<%- accountData.account_firstname.charAt(0) + accountData.account_lastname.replace(/\s/g, "") %>" readonly>
+        </label>
+        <label class="form-label">Your Review (Min 30 characters)
+            <textarea name="review_text" minlength="30" required><%= locals.review_text%></textarea>
+        </label>
+        <input type="submit" name="submitBtn" id="reviewBtn" value="Post Review">
+        <input type="hidden" name="account_id" value="<%- accountData.account_id %>">
+        <input type="hidden" name="inv_id" value="<%- data.inv_id %>">
+
+    </fieldset>
+</form>
+    <% } else { %>
+    <span>Only registered users can leave a review. Please <a href="/account/login">sign-in</a></span>
+    <% } %>
+<% if (toRender != null) {%>
+    <script>
+        let currentUrl = window.location.href;
+        let newUrl = currentUrl + "<%- toRender %>";
+        window.history.replaceState({}, document.title, newUrl);
+    </script>
+    <% } %>

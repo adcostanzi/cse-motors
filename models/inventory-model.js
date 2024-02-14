@@ -61,7 +61,7 @@ async function addClassification(classification_name){
 // Adds new inventory to Database
 async function addInventory(classification_id, inv_make, inv_model, inv_year, inv_description, inv_image, inv_thumbnail, inv_price, inv_miles, inv_color){
   try {
-    const sql = "INSERT INTO inventory (inv_make, inv_model, inv_year, inv_description, inv_image, inv_thumbnail, inv_price, inv_miles, inv_color, classification_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) returning *"
+    const sql = "INSERT INTO inventory (inv_make, inv_model, inv_year, inv_description, inv_image, inv_thumbnail, inv_price, inv_miles, inv_color, classification_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *"
     return await pool.query(sql, [inv_make, inv_model, inv_year, inv_description, inv_image, inv_thumbnail, inv_price, inv_miles, inv_color, classification_id])
   } catch (error) {
     return error.message
@@ -89,4 +89,24 @@ async function deleteInventory(inv_id){
 }
 
 
-module.exports = {getClassifications, getInventoryByClassificationId, getDetailsByInvId, addClassification, addInventory, getClassificationName, updateInventory, deleteInventory}
+// Queries review from an existing inv_id
+async function getReviewsById(inv_id){
+  try {
+    const sql = "SELECT account_firstname, account_lastname, review_text, review_date FROM review JOIN account ON review.account_id = account.account_id WHERE review.inv_id = $1"
+    return await pool.query(sql, [inv_id])
+  } catch (error) {
+    return error.message
+  }
+}
+
+
+async function insertReview(review_text, inv_id, account_id){
+  try {
+    const sql = "INSERT INTO review (review_text, inv_id, account_id) VALUES ($1, $2, $3) RETURNING *"
+    return await pool.query(sql, [review_text, inv_id, account_id])
+  } catch (error) {
+    return error.message
+  }
+}
+
+module.exports = {getClassifications, getInventoryByClassificationId, getDetailsByInvId, addClassification, addInventory, getClassificationName, updateInventory, deleteInventory, getReviewsById, insertReview}

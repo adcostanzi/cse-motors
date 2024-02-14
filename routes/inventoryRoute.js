@@ -40,6 +40,12 @@ router.get("/delete/:inv_id", utilities.handleErrors(invController.buildDeleteIn
 router.post("/delete", utilities.handleErrors(invController.deleteInventory))
 
 
+// Route to post review
+router.post("/detail/review",
+invValidate.reviewRules(),
+invValidate.checkReview,
+utilities.handleErrors(invController.postReview))
+
 // Route to update inventory
 router.post("/update",
 invValidate.inventoryRules(),

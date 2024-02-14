@@ -2,6 +2,7 @@ const utilities = require(".")
 const {body, validationResult} = require("express-validator")
 const validate = {}
 
+
 // Add Classification Form Validation Rules
 validate.classificationRules = () => {
     return [
@@ -11,6 +12,55 @@ validate.classificationRules = () => {
             .isAlpha()
             .withMessage("Please provide a valid classification. Numbers and special characters not allowed."),
     ]
+}
+
+// Check classification form: return errors or continues with process
+validate.checkClassification = async (req, res, next) => {
+    const {classification_name} = req.body
+    let errors = []
+    errors = validationResult(req)
+    if (!errors.isEmpty()){
+        let nav = await utilities.getNav()
+        res.render("inventory/add-classification", {
+            errors,
+            title: "Add Classification",
+            nav,
+            classification_name
+        })
+        return
+    }
+    next()
+}
+
+
+// Validation rules for review_text (textarea)
+validate.reviewRules = () => {
+    return [
+        body("review_text")
+            .trim()
+            .isLength({min: 30})
+            .withMessage("Review should be at least 30 characters long")
+    ]
+}
+
+// Check reviews form: return errors or continue
+validate.checkReview = async (req, res, next) => {
+    const {inv_id, review_text} = req.body
+    let errors = []
+    errors = validationResult(req)
+    if (!errors.isEmpty()){
+        let nav = await utilities.getNav()
+        let car = await utilities.getCarName(inv_id)
+        res.render("inventory/detail", {
+            title : `${car}`,
+            nav,
+            errors,
+            review_text: review_text,
+            toRender: inv_id,
+        })
+        //return
+    }
+    next()
 }
 
 // Add Inventory Form Validation Rules
@@ -72,23 +122,6 @@ validate.inventoryRules = () => {
 
 
 
-// Check classification form: return errors or continues with process
-validate.checkClassification = async (req, res, next) => {
-    const {classification_name} = req.body
-    let errors = []
-    errors = validationResult(req)
-    if (!errors.isEmpty()){
-        let nav = await utilities.getNav()
-        res.render("inventory/add-classification", {
-            errors,
-            title: "Add Classification",
-            nav,
-            classification_name
-        })
-        return
-    }
-    next()
-}
 
 // Check inventory form: return errors or continues with process
 validate.checkInventory = async (req, res, next) => {

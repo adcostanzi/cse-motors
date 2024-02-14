@@ -42,9 +42,7 @@
             <input type="text" name="inv_color" minlength="3" value="<%= locals.inv_color %>" required>
         </label>
         <input type="submit" name="submitBtn" id="updateBtn" value="Update Vehicle" disabled>
-        <input type="hidden" name="inv_id"
-        <% if(locals.inv_id) {%> value="<%= locals.inv_id %>"
-         <%   } %> >
+        <input type="hidden" name="inv_id" value="<%= locals.data.inv_id %>">
     </fieldset>
 </form>
 <script src="/js/inv-update.js"></script>

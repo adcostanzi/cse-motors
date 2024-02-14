@@ -254,3 +254,21 @@ SET
 		inv_thumbnail,
 		'/images',
 		'/images/vehicles');
+
+
+-- Create review table / Create relation with inventory and account tables
+CREATE TABLE public.review (
+	review_id SERIAL PRIMARY KEY,
+	review_text TEXT NOT NULL,
+	review_date TIMESTAMPTZ DEFAULT NOW() NOT NULL,
+	inv_id INT NOT NULL,
+	account_id INT NOT NULL,
+	CONSTRAINT fk_inventory FOREIGN KEY(inv_id)
+		REFERENCES public.inventory(inv_id)
+		ON UPDATE CASCADE
+		ON DELETE CASCADE,
+	CONSTRAINT fk_account FOREIGN KEY(account_id)
+		REFERENCES public.account(account_id)
+		ON UPDATE CASCADE
+		ON DELETE CASCADE
+);

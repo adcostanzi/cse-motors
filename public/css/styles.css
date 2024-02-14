@@ -287,6 +287,65 @@ picture > img {
   color: var(--primary);
 }
 
+/************ REVIEWS *************/
+
+.review {
+  margin: 1rem auto;
+  border: 1px solid var(--accent-2)
+}
+
+.no-reviews {
+  display: block;
+  background-color: rgba(94, 127, 100, 0.2);
+  color: black;
+  margin: 1rem 0;
+}
+
+.review-section {
+  margin: 2rem 0px;
+}
+
+.review-section > h3 {
+  font-size: 1.3rem;
+}
+
+.review-separator {
+  margin: 0;
+  border: solid 2px var(--accent-1);
+}
+
+.review-text {
+  background-color: rgba(94, 127, 100, 0.2);
+  margin: 0;
+  padding: 1.2rem 0.5rem;
+}
+
+#review-form {
+  margin: 1rem 0;
+  width: 100%;
+  max-width: none;
+}
+
+#review-form input, #review-form textarea {
+  margin: 0.2rem 0 1rem;
+}
+
+input[name="username"]{
+  max-width: 200px;
+}
+
+#review-form textarea {
+  width: 100%;
+  max-width: 100%;
+}
+
+#review-form .form-label {
+  text-align: left;
+}
+
+#review-form  #reviewBtn {
+  margin: 1rem auto;
+}
 
 /************ FORMS *************/
 
@@ -397,6 +456,10 @@ input:required:invalid, input:focus:invalid, textarea:required:invalid, textarea
 .hr-form {
   margin: 2rem 0;
 }
+
+
+
+
 /************ ERROR *************/
 
 .error-img {
