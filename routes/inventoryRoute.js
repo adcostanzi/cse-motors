@@ -41,7 +41,7 @@ router.post("/delete", utilities.handleErrors(invController.deleteInventory))
 
 
 // Route to post review
-router.post("/detail/review",
+router.post("/detail/:inv_id",
 invValidate.reviewRules(),
 invValidate.checkReview,
 utilities.handleErrors(invController.postReview))

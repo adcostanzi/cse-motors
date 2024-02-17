@@ -1,5 +1,7 @@
 const utilities = require(".")
 const {body, validationResult} = require("express-validator")
+const invCont = require("../controllers/invController")
+const invModel = require("../models/inventory-model")
 const validate = {}
 
 
@@ -51,14 +53,20 @@ validate.checkReview = async (req, res, next) => {
     if (!errors.isEmpty()){
         let nav = await utilities.getNav()
         let car = await utilities.getCarName(inv_id)
+        const data = await invModel.getDetailsByInvId(inv_id)
+        const details = await utilities.buildDetailsPage(data)
+        const reviews = await utilities.getReviews(inv_id)
         res.render("inventory/detail", {
             title : `${car}`,
             nav,
             errors,
             review_text: review_text,
             toRender: inv_id,
+            details: details,
+            reviews: reviews,
+            data,
         })
-        //return
+        return
     }
     next()
 }

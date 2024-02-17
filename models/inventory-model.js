@@ -92,7 +92,7 @@ async function deleteInventory(inv_id){
 // Queries review from an existing inv_id
 async function getReviewsById(inv_id){
   try {
-    const sql = "SELECT account_firstname, account_lastname, review_text, review_date FROM review JOIN account ON review.account_id = account.account_id WHERE review.inv_id = $1"
+    const sql = "SELECT account_firstname, account_lastname, review_text, review_date FROM review JOIN account ON review.account_id = account.account_id WHERE review.inv_id = $1 ORDER BY review_date DESC"
     return await pool.query(sql, [inv_id])
   } catch (error) {
     return error.message
@@ -100,6 +100,19 @@ async function getReviewsById(inv_id){
 }
 
 
+
+// Queries review from an existing account_id
+async function getReviewsByAccountId(account_id){
+  try {
+    const sql = "SELECT account_id, review_id, review_date, inv_year, inv_make, inv_model FROM review JOIN inventory ON review.inv_id = inventory.inv_id WHERE review.account_id = $1 ORDER BY review_date DESC"
+    return await pool.query(sql, [account_id])
+  } catch (error) {
+    return error.message
+  }
+}
+
+
+// Insert review into review table
 async function insertReview(review_text, inv_id, account_id){
   try {
     const sql = "INSERT INTO review (review_text, inv_id, account_id) VALUES ($1, $2, $3) RETURNING *"
@@ -109,4 +122,4 @@ async function insertReview(review_text, inv_id, account_id){
   }
 }
 
-module.exports = {getClassifications, getInventoryByClassificationId, getDetailsByInvId, addClassification, addInventory, getClassificationName, updateInventory, deleteInventory, getReviewsById, insertReview}
+module.exports = {getClassifications, getInventoryByClassificationId, getDetailsByInvId, addClassification, addInventory, getClassificationName, updateInventory, deleteInventory, getReviewsById, insertReview, getReviewsByAccountId}

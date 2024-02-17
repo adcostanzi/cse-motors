@@ -1,0 +1,28 @@
+<h1><%- title %></h1>
+<%- messages() %>
+<% if (errors) {%>
+<ul class="notice">
+  <% errors.array().forEach(error => { %>
+  <li><%=error.msg %></li>
+  <% }) %>
+</ul>
+<% } %>
+<% if (loggedin) {%>
+    <form class="cse-motor-form" id="review-form" action="/account/review/edit/<%- reviewId %>" method="post">
+        <fieldset>
+            <legend>Edit your review</legend>
+            <label class="form-label">Review Date
+                <input type="text" name="reviewDate" value="<%- reviewDate.toLocaleDateString("en-US", {month: "long", day:"numeric", year:"numeric"}) %>" readonly>
+            </label>
+            <label class="form-label">Review Text (Min 30 characters)
+                <textarea name="review_text" minlength="30" required><%= locals.review_text %></textarea>
+            </label>
+            <input type="submit" name="submitBtn" id="reviewBtn" value="Edit Review" disabled>
+            <input type="hidden" name="review_id" value="<%- reviewId %>">
+    
+        </fieldset>
+    </form>
+        <% } else { %>
+        <span>Only registered users can edit a review. Please <a href="/account/login">sign-in</a></span>
+        <% } %>
+    <script src="/js/review-edit.js"></script>

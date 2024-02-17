@@ -19,6 +19,26 @@ router.get("/register", utilities.handleErrors(accountController.buildRegister))
 router.get("/update/:account_id", utilities.handleErrors(accountController.buildUpdatePage))
 
 
+//Deliver review delete view
+router.get("/review/delete/:review_id", utilities.checkAuthor, utilities.handleErrors(accountController.buildReviewDeletePage))
+
+// Deliver Delete of Review
+router.post("/review/delete/:review_id", utilities.handleErrors(accountController.deleteReview))
+
+
+//Deliver review edit view
+router.get("/review/edit/:review_id", utilities.checkAuthor, utilities.handleErrors(accountController.buildReviewEditPage))
+
+// Deliver Edit of Review
+router.post("/review/edit/:review_id",
+regValidate.reviewRules(),
+regValidate.checkReview,
+utilities.handleErrors(accountController.editReview))
+
+//Deliver review delete view
+//router.get("/review/delete/:review_id", utilities.handleErrors(accountController.buildReviewDeletePage))
+
+
 //Deliver update of account password
 router.post("/update-password",
 regValidate.passwordUpdateRules(),

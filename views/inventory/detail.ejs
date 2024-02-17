@@ -1,8 +1,7 @@
 <%# Display Car Details Section %>
 <%- details %>
 <%- reviews %>
-<% if (loggedin) {%>
-    <%- messages() %>
+<%- messages() %>
 <% if (errors) {%>
 <ul class="notice">
   <% errors.array().forEach(error => { %>
@@ -10,7 +9,8 @@
   <% }) %>
 </ul>
 <% } %>
-<form class="cse-motor-form" id="review-form" action="/inv/detail/review" method="post">
+<% if (loggedin) {%>
+<form class="cse-motor-form" id="review-form" action="/inv/detail/<%- data.inv_id %>" method="post">
     <fieldset>
         <legend>Write your review</legend>
         <label class="form-label">Username
@@ -27,11 +27,4 @@
 </form>
     <% } else { %>
     <span>Only registered users can leave a review. Please <a href="/account/login">sign-in</a></span>
-    <% } %>
-<% if (toRender != null) {%>
-    <script>
-        let currentUrl = window.location.href;
-        let newUrl = currentUrl + "<%- toRender %>";
-        window.history.replaceState({}, document.title, newUrl);
-    </script>
     <% } %>

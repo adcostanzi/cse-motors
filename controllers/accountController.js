@@ -93,11 +93,14 @@ async function accountLogin(req, res){
 }
 
 async function buildManagementHome(req, res) {
+    let account_id = res.locals.accountData.account_id
     let nav = await utilities.getNav()
+    let reviews = await utilities.getReviewsByAccount(account_id)
     res.render("account/management",{
         title: "Account Management",
         nav,
         errors: null,
+        reviews,
     })
 }
 
@@ -168,4 +171,73 @@ async function updateAccountPassword(req, res) {
     }
 }
 
-module.exports = {buildLogin, buildRegister, registerAccount, accountLogin, buildManagementHome, buildUpdatePage, updateAccountInfo, updateAccountPassword}
+async function buildReviewEditPage(req, res){
+    let nav = await utilities.getNav()
+    let review_id = parseInt(req.params.review_id)
+    let reviewData = await accountModel.getReviewById(review_id)
+    res.render("account/review/edit",{
+        title: `Edit ${reviewData.inv_year} ${reviewData.inv_make} ${reviewData.inv_model}`,
+        nav,
+        errors: null,
+        reviewDate: reviewData.review_date,
+        review_text: reviewData.review_text,
+        reviewId: review_id,
+    })
+}
+
+async function editReview(req, res){
+    const {review_id, review_text} = req.body
+    let reviewResult = await accountModel.editReview(review_id, review_text)
+    if (reviewResult){
+        req.flash("notice","Congratulations, your review has been edited!")
+        res.redirect("/account/")
+    } else {
+        req.flash("notice","Unfortunately there was an error and we couldn't update the review")
+        let reviews = await utilities.getReviewsByAccount(account_id)
+        let nav = await utilities.getNav()
+        res.status(501).render(`/account/`, {
+            nav,
+            title: "Account Management",
+            reviews,
+            errors: null,            
+        })
+    }
+}
+
+
+async function buildReviewDeletePage(req, res){
+    let nav = await utilities.getNav()
+    let review_id = parseInt(req.params.review_id)
+    let reviewData = await accountModel.getReviewById(review_id)
+    res.render("account/review/delete",{
+        title: `Delete ${reviewData.inv_year} ${reviewData.inv_make} ${reviewData.inv_model} Review`,
+        nav,
+        review_id: review_id,
+        review_date: reviewData.review_date,
+        review_text: reviewData.review_text,
+        errors: null,
+    }) 
+}
+
+
+async function deleteReview(req, res){
+    const {review_id} = req.body
+    let reviewResult = await accountModel.deleteReviewbyId(review_id)
+    if (reviewResult){
+        req.flash("notice", "Review has been sucessfully deleted!")
+        res.redirect("/account/")
+    } else {
+        let account_id = res.locals.accountData.account_id
+        let nav = await utilities.getNav()
+        let reviews = await utilities.getReviewsByAccount(account_id)
+        req.flash("notice", "Unfortunately there was an error and the review could not be deleted.")
+        res.status(501).render("account/management",{
+            title: "Account Management",
+            nav,
+            errors: null,
+            reviews,
+        })
+    }
+}
+
+module.exports = {buildLogin, buildRegister, registerAccount, accountLogin, buildManagementHome, buildUpdatePage, updateAccountInfo, updateAccountPassword, buildReviewEditPage, editReview, buildReviewDeletePage, deleteReview}

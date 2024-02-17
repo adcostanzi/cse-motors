@@ -67,6 +67,38 @@ validate.checkRegData = async (req, res, next) => {
     next()
   }
   
+// Validation rules for review_text (textarea)
+validate.reviewRules = () => {
+  return [
+      body("review_text")
+          .trim()
+          .isLength({min: 30})
+          .withMessage("Review should be at least 30 characters long")
+  ]
+}
+
+// Check reviews form: return errors or continue
+validate.checkReview = async (req, res, next) => {
+  const {review_text, review_id} = req.body
+  let errors = []
+  errors = validationResult(req)
+  if (!errors.isEmpty()){
+      let nav = await utilities.getNav()
+      let reviewData = await accountModel.getReviewById(review_id)
+      res.render(`account/review/edit`, {
+          title : `Edit ${reviewData.inv_year} ${reviewData.inv_make} ${reviewData.inv_model}`,
+          nav,
+          errors,
+          review_text: review_text,
+          reviewDate: reviewData.review_date,
+          reviewId: review_id
+      })
+      return
+  }
+  next()
+}
+
+
 
 
 // Account Password Form Validation Rules

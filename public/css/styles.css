@@ -475,7 +475,7 @@ input:required:invalid, input:focus:invalid, textarea:required:invalid, textarea
 }
 
 
-/************ MANAGEMENT INVENTORY *************/
+/************ TABLES *************/
 
 table {
   border: thin solid black;
@@ -495,12 +495,21 @@ th {
 }
 
 td, th {
-  padding: 0.7rem 1rem;
+  padding: 0.1rem 0.1rem;
 }
 
 tr:nth-child(even) {
   background-color: rgba(94, 127, 100, 0.2);
 }
+
+@media screen  and (min-width: 481px) {
+  td, th {
+    padding: 0.7rem 1rem;
+  }
+  
+
+}
+
 
 /************ FOOTER *************/
 

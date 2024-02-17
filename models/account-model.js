@@ -79,5 +79,50 @@ async function updatePassword(account_id, account_password){
     }
 }
 
+// Queries review from an existing review_id
+async function getReviewById(review_id){
+    try {
+      const sql = "SELECT review_text, review_date, inv_year, inv_make, inv_model FROM review JOIN inventory ON review.inv_id = inventory.inv_id WHERE review_id = $1"
+      let res = await pool.query(sql, [review_id])
+      return res.rows[0]
+    } catch (error) {
+      return error.message
+    }
+  }
 
-module.exports = {registerAccount, checkExistingEmail, checkCredentials, getAccountByEmail, getAccountById, updateInformation, updatePassword}
+// Updates review text
+async function editReview(review_id, review_text){
+    try {
+      const sql = "UPDATE review  SET review_text = $1 WHERE review_id = $2 RETURNING *"
+      return await pool.query(sql, [review_text, review_id])
+    } catch (error) {
+      return error.message
+    }
+  }
+
+
+  
+  // Deletes review
+  async function deleteReviewbyId(review_id){
+      try {
+        const sql = "DELETE FROM review WHERE review_id = $1"
+        return await pool.query(sql, [review_id])
+      } catch (error) {
+        new Error("Delete Inventory Error")
+      }
+    }
+    
+
+  
+  // Get review author
+  async function getReviewAuthor(review_id){
+    try {
+      const sql = "SELECT account_id FROM review WHERE review_id = $1"
+      let res = await pool.query(sql, [review_id])
+      return res.rows[0]
+    } catch (error) {
+      return error.message
+    }
+  }
+
+module.exports = {registerAccount, checkExistingEmail, checkCredentials, getAccountByEmail, getAccountById, updateInformation, updatePassword, getReviewById, editReview, deleteReviewbyId, getReviewAuthor}

@@ -1,0 +1,28 @@
+<h1><%- title %></h1>
+<%- messages() %>
+<% if (errors) {%>
+<ul class="notice">
+  <% errors.array().forEach(error => { %>
+  <li><%=error.msg %></li>
+  <% }) %>
+</ul>
+<% } %>
+<% if (loggedin) {%>
+    <form class="cse-motor-form" id="review-form" action="/account/review/delete/<%- review_id %>" method="post">
+        <fieldset>
+            <legend>Delete your review</legend>
+            <p>Caution: Confirm correct item! Deletion cannot be undone</p>
+            <label class="form-label">Review Date
+                <input type="text" name="reviewDate" value="<%- review_date.toLocaleDateString("en-US", {month: "long", day:"numeric", year:"numeric"}) %>" readonly>
+            </label>
+            <label class="form-label">Review Text (Min 30 characters)
+                <textarea name="review_text" minlength="30" required readonly><%= review_text %></textarea>
+            </label>
+            <input type="submit" name="submitBtn" id="reviewBtn" value="Delete Review">
+            <input type="hidden" name="review_id" value="<%- review_id %>">
+    
+        </fieldset>
+    </form>
+        <% } else { %>
+        <span>Only registered users can delete a review. Please <a href="/account/login">sign-in</a></span>
+        <% } %>
