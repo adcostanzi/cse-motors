@@ -2,6 +2,7 @@ const express = require("express")
 const router = new express.Router()
 const utilities = require("../utilities/")
 const accountController = require("../controllers/accountController")
+const reviewController = require("../controllers/reviewController")
 const regValidate = require("../utilities/account-validation")
 
 // Deliver Default account management view
@@ -23,7 +24,7 @@ router.get("/update/:account_id", utilities.handleErrors(accountController.build
 router.get("/review/delete/:review_id", utilities.checkAuthor, utilities.handleErrors(accountController.buildReviewDeletePage))
 
 // Deliver Delete of Review
-router.post("/review/delete/:review_id", utilities.handleErrors(accountController.deleteReview))
+router.post("/review/delete/:review_id", utilities.handleErrors(reviewController.deleteReview))
 
 
 //Deliver review edit view
@@ -33,7 +34,7 @@ router.get("/review/edit/:review_id", utilities.checkAuthor, utilities.handleErr
 router.post("/review/edit/:review_id",
 regValidate.reviewRules(),
 regValidate.checkReview,
-utilities.handleErrors(accountController.editReview))
+utilities.handleErrors(reviewController.editReview))
 
 //Deliver review delete view
 //router.get("/review/delete/:review_id", utilities.handleErrors(accountController.buildReviewDeletePage))

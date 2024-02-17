@@ -1,6 +1,7 @@
 const utilities = require(".")
 const {body, validationResult} = require("express-validator")
 const accountModel = require("../models/account-model")
+const reviewModel = require("../models/review-model")
 const validate = {}
 
 // Registration Data Validation Rules
@@ -84,7 +85,7 @@ validate.checkReview = async (req, res, next) => {
   errors = validationResult(req)
   if (!errors.isEmpty()){
       let nav = await utilities.getNav()
-      let reviewData = await accountModel.getReviewById(review_id)
+      let reviewData = await reviewModel.getReviewById(review_id)
       res.render(`account/review/edit`, {
           title : `Edit ${reviewData.inv_year} ${reviewData.inv_make} ${reviewData.inv_model}`,
           nav,

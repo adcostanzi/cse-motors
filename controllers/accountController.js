@@ -1,5 +1,6 @@
 const utilities = require("../utilities/")
 const accountModel = require("../models/account-model")
+const reviewModel = require("../models/review-model")
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 require("dotenv").config()
@@ -174,7 +175,7 @@ async function updateAccountPassword(req, res) {
 async function buildReviewEditPage(req, res){
     let nav = await utilities.getNav()
     let review_id = parseInt(req.params.review_id)
-    let reviewData = await accountModel.getReviewById(review_id)
+    let reviewData = await reviewModel.getReviewById(review_id)
     res.render("account/review/edit",{
         title: `Edit ${reviewData.inv_year} ${reviewData.inv_make} ${reviewData.inv_model}`,
         nav,
@@ -185,30 +186,11 @@ async function buildReviewEditPage(req, res){
     })
 }
 
-async function editReview(req, res){
-    const {review_id, review_text} = req.body
-    let reviewResult = await accountModel.editReview(review_id, review_text)
-    if (reviewResult){
-        req.flash("notice","Congratulations, your review has been edited!")
-        res.redirect("/account/")
-    } else {
-        req.flash("notice","Unfortunately there was an error and we couldn't update the review")
-        let reviews = await utilities.getReviewsByAccount(account_id)
-        let nav = await utilities.getNav()
-        res.status(501).render(`/account/`, {
-            nav,
-            title: "Account Management",
-            reviews,
-            errors: null,            
-        })
-    }
-}
-
 
 async function buildReviewDeletePage(req, res){
     let nav = await utilities.getNav()
     let review_id = parseInt(req.params.review_id)
-    let reviewData = await accountModel.getReviewById(review_id)
+    let reviewData = await reviewModel.getReviewById(review_id)
     res.render("account/review/delete",{
         title: `Delete ${reviewData.inv_year} ${reviewData.inv_make} ${reviewData.inv_model} Review`,
         nav,
@@ -220,24 +202,4 @@ async function buildReviewDeletePage(req, res){
 }
 
 
-async function deleteReview(req, res){
-    const {review_id} = req.body
-    let reviewResult = await accountModel.deleteReviewbyId(review_id)
-    if (reviewResult){
-        req.flash("notice", "Review has been sucessfully deleted!")
-        res.redirect("/account/")
-    } else {
-        let account_id = res.locals.accountData.account_id
-        let nav = await utilities.getNav()
-        let reviews = await utilities.getReviewsByAccount(account_id)
-        req.flash("notice", "Unfortunately there was an error and the review could not be deleted.")
-        res.status(501).render("account/management",{
-            title: "Account Management",
-            nav,
-            errors: null,
-            reviews,
-        })
-    }
-}
-
-module.exports = {buildLogin, buildRegister, registerAccount, accountLogin, buildManagementHome, buildUpdatePage, updateAccountInfo, updateAccountPassword, buildReviewEditPage, editReview, buildReviewDeletePage, deleteReview}
+module.exports = {buildLogin, buildRegister, registerAccount, accountLogin, buildManagementHome, buildUpdatePage, updateAccountInfo, updateAccountPassword, buildReviewEditPage, buildReviewDeletePage}

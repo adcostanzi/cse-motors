@@ -220,19 +220,5 @@ invCont.deleteInventory = async function (req, res, next) {
     }
 }
 
-// Post Review in Database and refresh page
-invCont.postReview = async function (req, res, next) {
-  const {review_text, inv_id, account_id} = req.body
-
-  //Insert review in Database
-  const reviewResult = await invModel.insertReview(review_text, inv_id, account_id)
-  if (reviewResult) {
-    req.flash("notice", "Your review has been posted on the page! Thanks for your feedback!")
-    res.redirect(`/inv/detail/${inv_id}`)
-  } else {
-    req.flash("notice", "Unfortunately we could not proccess your review. Try again later")
-    res.redirect(`/inv/detail/${inv_id}`)
-  }
-}
 
 module.exports = invCont

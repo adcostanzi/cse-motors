@@ -1,5 +1,5 @@
 const invModel = require("../models/inventory-model")
-const accountModel = require("../models/account-model")
+const reviewModel = require("../models/review-model")
 const Util = {}
 const jwt = require("jsonwebtoken")
 require("dotenv").config()
@@ -175,7 +175,7 @@ Util.checkAccountType = (req, res, next) => {
 // Checks and allows/denies access depending on the user (only author allowed)
 Util.checkAuthor = async function (req, res, next){
   let review_id = parseInt(req.params.review_id)
-  let reviewInfo = await accountModel.getReviewAuthor(review_id)
+  let reviewInfo = await reviewModel.getReviewAuthor(review_id)
   if (!res.locals.accountData){
     req.flash("notice", "Access forbidden. Please log in")
     return res.redirect("/account/login")
@@ -189,7 +189,7 @@ Util.checkAuthor = async function (req, res, next){
 
 // Get reviews and return them as HTML template
 Util.getReviews = async function (inv_id) {
-  const rawReviews = await invModel.getReviewsById(inv_id)
+  const rawReviews = await reviewModel.getReviewsById(inv_id)
   let reviews = `<section class="review-section"><h3>Customer Reviews</h3>`
   if (rawReviews.rows.length > 0){
     rawReviews.rows.forEach((review) => {
@@ -216,7 +216,7 @@ Util.getCarName = async function (inv_id){
 }
 
 Util.getReviewsByAccount = async function(account_id) {
-  const rawReviews = await invModel.getReviewsByAccountId(account_id)
+  const rawReviews = await reviewModel.getReviewsByAccountId(account_id)
   let reviews = ""
   let dateOptions = {month: "long", day:"numeric", year:"numeric"}
   if (rawReviews.rows.length > 0){

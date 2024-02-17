@@ -2,6 +2,7 @@
 const express = require("express")
 const router = new express.Router() 
 const invController = require("../controllers/invController")
+const reviewController = require("../controllers/reviewController")
 const utilities = require("../utilities/")
 const invValidate = require("../utilities/inventory-validation")
 
@@ -44,7 +45,7 @@ router.post("/delete", utilities.handleErrors(invController.deleteInventory))
 router.post("/detail/:inv_id",
 invValidate.reviewRules(),
 invValidate.checkReview,
-utilities.handleErrors(invController.postReview))
+utilities.handleErrors(reviewController.postReview))
 
 // Route to update inventory
 router.post("/update",
